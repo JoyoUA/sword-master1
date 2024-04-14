@@ -1,50 +1,39 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { WebSocketService } from './core/websocket.service';
-import { Subscription } from 'rxjs';
-
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { WebSocketService } from './core/web-socket.service';import { ChatService } from './core/chat.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styles: []
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
-  word = 'шкала'
-  newMessage = '';
+  title = 'N';
+
+  newMessage!: string;
   messageList: string[] = [];
-  @ViewChild('wordsBlock') wordsBlock!: ElementRef
 
-  constructor(private wss: WebSocketService) {
+  constructor(private wss: WebSocketService, private chatService: ChatService){}
 
+  // ngOnInit(): void {
+  //   this.wss.connection()
+  // }
+
+  ngOnDestroy(): void {
+    this.wss.disconnect()
   }
+
   ngOnInit(){
-    this.wss.getNewMessage().subscribe((message: string) => {
+    this.chatService.getNewMessage().subscribe((message: string) => {
       this.messageList.push(message);
     })
   }
 
-  ngOnDestroy() {
-    // this.messageSubscription.unsubscribe();
-  }
-
-
-  send(event: any) {
-    // const inputValue = event.target.value;
-    // if (this.wordsBlock) {
-    //   const spanElement = document.createElement('span'); // Создаем новый элемент <span>
-
-    //   spanElement.textContent = inputValue; // Устанавливаем текст нового элемента
-  
-    //   // Добавляем созданный элемент к содержимому элемента wordsBlock
-    //   this.wordsBlock.nativeElement.appendChild(spanElement);
-    // }
-
-    // if (this.message.trim() !== '') {
-    //   this.wss.sendMessage({ message: this.message });
-    //   this.message = '';
-    // }
-    this.wss.sendMessage(this.newMessage);
+  sendMessage() {
+    this.chatService.sendMessage(this.newMessage);
     this.newMessage = '';
   }
-  
+
+  createRoom(){
+    
+  }
 }

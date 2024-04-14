@@ -1,27 +1,10 @@
-<!-- <h1>Words</h1>
-<div #wordsBlock>
-    <span>кукла</span>
-</div>
-<input type="text" (change)="send($event)"> -->
-<!-- <div>
-    <div *ngFor="let msg of messages">
-      {{ msg.message }}
-    </div>
-  </div>
-  
-  <div>
-    <input type="text" [(ngModel)]="message" (keyup.enter)="send($event)">
-    <button (click)="send($event)">Send</button>
-  </div> -->
-
 <div *ngFor="let message of messageList">
-<li>
-    {{message}}
-</li>
+    <li>
+        {{message}}
+    </li>  
 </div>
 
-<input
-[(ngModel)]="newMessage"
-(keyup)="$event.keyCode == 13 && send($event)"
-/>
-<button (click)="send($event)">Send Message</button>
+<input [(ngModel)]="newMessage" (keyup)="$event.keyCode == 13 && sendMessage()" />
+<button (click)="sendMessage()">Send Message</button>
+
+<!-- <button (click)="createRoom()">create room</button> -->

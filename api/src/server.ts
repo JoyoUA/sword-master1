@@ -1,6 +1,7 @@
 import express from 'express';
 import http from 'http';
 import {Server} from 'socket.io'
+import onConnection from './socket/onConnection';
 
 const app = express();
 const server = http.createServer(app);
@@ -22,9 +23,34 @@ server.listen(PORT, () => {
 });
 
 io.on('connection', (socket) => {
-    console.log('user connect:' + socket.id);
-
-    socket.on('chat-message', message => {
-        io.emit('chat-message', message)
+    onConnection(io, socket)
+    // console.log('user connect:' + socket.id);
+    words = [''];
+    socket.on('message', message => {
+        
+        // io.emit('message', message)
     })
 })
+
+// const app = require('express')();
+// const httpServer = require('http').createServer(app);
+// const io = require('socket.io')(httpServer, {
+//   cors: {origin : '*'}
+// });
+
+// const port = process.env.PORT || 3000;
+
+// io.on('connection', (socket: any) => {
+//   console.log('a user connected');
+
+//   socket.on('message', (message: any) => {
+//     console.log(message);
+//     io.emit('message', `${socket.id.substr(0, 2)} said ${message}`);
+//   });
+
+//   socket.on('disconnect', () => {
+//     console.log('a user disconnected!');
+//   });
+// });
+
+// httpServer.listen(port, () => console.log(`listening on port ${port}`));

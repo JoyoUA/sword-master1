@@ -25,7 +25,7 @@ server.listen(PORT, () => {
 io.on('connection', (socket) => {
     onConnection(io, socket)
     // console.log('user connect:' + socket.id);
-    words = [''];
+    
     socket.on('message', message => {
         
         // io.emit('message', message)

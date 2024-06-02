@@ -1,10 +1,18 @@
-<div *ngFor="let message of messageList">
-    <li>
-        {{message}}
-    </li>  
+<app-header></app-header>
+
+<!-- <app-game-menu></app-game-menu> -->
+<router-outlet></router-outlet>
+
+<!-- <div *ngFor="let message of messageList">
+    <ng-container *ngFor="let letter of message">
+        <li [ngClass]="{'green': letter.valid == 'success', 'yellow': letter.valid == 'has'}">
+            {{letter.letter}}
+        </li>  
+    </ng-container>
+
 </div>
 
 <input [(ngModel)]="newMessage" (keyup)="$event.keyCode == 13 && sendMessage()" />
-<button (click)="sendMessage()">Send Message</button>
+<button (click)="sendMessage()">Send Message</button> -->
 
 <!-- <button (click)="createRoom()">create room</button> -->

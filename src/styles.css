@@ -1,1 +1,47 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --yellow-color: rgb(255, 247, 0, 0.75);
+    --green-color: rgba(55, 255, 0, 0.75);
+    --white-color: rgba(255, 255, 255, 0.75);
+}   
+
+body { font-family: 'Roboto', Arial, Helvetica, sans-serif; margin: 16px; background: rgb(2,0,36); background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,22,121,0.7959558823529411) 48%, rgba(0,212,255,1) 100%);}
+
+
+.bg-green { background-color: var(--green-color) !important }
+.bg-yellow { background-color: var(--yellow-color) !important }
+.bg-white { background-color: var(--white-color) !important }
+
+
+button.thin { height: 32px; }
+
+textarea { resize: none; }
+
+button, input[type="button"] { white-space: nowrap; display: inline-block; border: none; padding: 0px 24px; height: 40px; text-decoration: none; box-sizing: border-box; cursor: pointer; }
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="url"],
+select,
+textarea,
+.comment-trade { background: none; font-style: normal; font-weight: var(--font-weight-400); font-size: 14px; line-height: 18px; display: flex; flex-direction: column; align-items: flex-start; padding: 10px 16px; gap: 6px; border: 1px solid rgb(221, 247, 255); color: rgb(41, 41, 41); background-color: rgb(233, 233, 233); border-radius: 6px; box-sizing: border-box; width: 100%; }
+
+
+*::placeholder {
+    color: var(--color-font-disable);
+}
+
+.primary-btn,
+.secondary-btn,
+.icon-button { display: flex; gap: 6px; align-items: center; justify-content: center; border: solid 0; border-radius: 4px; font-style: normal; font-weight: var(--font-weight-500); font-size: 14px; line-height: 18px; text-align: center; }
+
+.primary-btn,
+.secondary-btn,
+.icon-button,
+input, button { height: 44px; }
+
+.icon-button { height: 40px; width: 40px; padding: 0; }

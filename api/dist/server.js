@@ -22,27 +22,52 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+const allWords = require('./dictionary/ru.json');
+let hiddenWord = getRandomWord();
+console.log(hiddenWord);
 io.on('connection', (socket) => {
     (0, onConnection_1.default)(io, socket);
-    // console.log('user connect:' + socket.id);
     socket.on('message', message => {
-        io.emit('message', message);
+        console.log(message);
+        const userWord = message.message.toLowerCase();
+        if (userWord == hiddenWord.join('')) {
+            hiddenWord = getRandomWord();
+            io.emit('message', { success: 'wordUnHide' });
+            console.log(hiddenWord);
+        }
+        else if (checkWordInDictionary(userWord)) {
+            const checkInWord = wordHasLetter(userWord);
+            io.emit('message', { word: checkInWord });
+        }
+        else {
+            io.emit('message', { error: 'wordNotFound' });
+        }
     });
 });
-// const app = require('express')();
-// const httpServer = require('http').createServer(app);
-// const io = require('socket.io')(httpServer, {
-//   cors: {origin : '*'}
-// });
-// const port = process.env.PORT || 3000;
-// io.on('connection', (socket: any) => {
-//   console.log('a user connected');
-//   socket.on('message', (message: any) => {
-//     console.log(message);
-//     io.emit('message', `${socket.id.substr(0, 2)} said ${message}`);
-//   });
-//   socket.on('disconnect', () => {
-//     console.log('a user disconnected!');
-//   });
-// });
-// httpServer.listen(port, () => console.log(`listening on port ${port}`));
+function checkWordInDictionary(userWord) {
+    return allWords.find(word => word.toLowerCase() == userWord.toLowerCase()) ? true : false;
+}
+function wordHasLetter(word) {
+    const wordArray = convertWordToLetter(word);
+    wordArray.forEach(letter => {
+        const letterIndex = hiddenWord.indexOf(letter.letter);
+        if (letterIndex !== -1) {
+            letter.valid = 'has';
+            if (letterIndex === wordArray.indexOf(letter)) {
+                letter.valid = 'success';
+            }
+        }
+        else {
+            letter.valid = 'fail';
+        }
+    });
+    return wordArray;
+}
+function convertWordToLetter(word) {
+    const letters = [];
+    Array.from(word).forEach((letter) => letters.push({ letter: letter, valid: undefined }));
+    return letters;
+}
+function getRandomWord() {
+    return (Array.isArray(allWords) && allWords.length > 0) ? Array.from(allWords[Math.floor(Math.random() * allWords.length)]) : [''];
+}

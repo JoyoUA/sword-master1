@@ -23,46 +23,38 @@ server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-let allWords: string[] = [];
-
-fs.readFile("./dictionary/ru.json", (err, data) => {
-    if (err) {
-        console.error("Ошибка чтения файла:", err);
-        return;
-    }
-    
-    allWords = JSON.parse(data.toString());
-});
-const hiddenWord = Array.from('слова')
-// Array.from(allWords[Math.floor(Math.random() * allWords.length)])
+const allWords: string[] = require('./dictionary/ru.json')
 
 
+let hiddenWord = getRandomWord();
+
+console.log(hiddenWord);
 io.on('connection', (socket) => {
     onConnection(io, socket)
-    // console.log('user connect:' + socket.id);
-    // console.log(letters_hiddenWord);
     
-    socket.on('message', message => {        
-        if(checkWordInDictionary(message.message)){
-            const checkInWord = wordHasLetter(message.message)
-            
-            console.log(checkInWord);
-            io.emit('message', checkInWord)
+    socket.on('message', message => {
+        console.log(message);
+        
+        const userWord = message.message.toLowerCase()
+        if(userWord == hiddenWord.join('')){
+            hiddenWord = getRandomWord()
+            io.emit('message', {success: 'wordUnHide'})
+            console.log(hiddenWord);
+
+        } else if(checkWordInDictionary(userWord)){
+            const checkInWord = wordHasLetter(userWord)
+            io.emit('message', {word: checkInWord})
             
         } else {
-            io.emit('message', 'error')
-
-            console.log('слова нет');
+            io.emit('message', {error: 'wordNotFound'})
         }
     })
 })
 
-function checkWordInDictionary(userWord: string | string[]): boolean{
-    return allWords.find(word => word == userWord) ? true : false
-    // return true
+function checkWordInDictionary(userWord: string): boolean{
+    return allWords.find(word => word.toLowerCase() == userWord.toLowerCase()) ? true : false
 }
 
-// console.log(wordHasLetter('сосок', convertWordToLetter('слова')))
 
 function wordHasLetter(word: string): wordArray[] {
     const wordArray: wordArray[] = convertWordToLetter(word);
@@ -89,30 +81,11 @@ function convertWordToLetter(word: string): wordArray[] {
     return letters
 }
 
+function getRandomWord(): string[] {
+    return (Array.isArray(allWords) && allWords.length > 0) ? Array.from(allWords[Math.floor(Math.random() * allWords.length)]) : ['']
+}
+
 export interface wordArray {
     letter: string
     valid: 'fail' | 'has' | 'success' | undefined
 }
-
-// const app = require('express')();
-// const httpServer = require('http').createServer(app);
-// const io = require('socket.io')(httpServer, {
-//   cors: {origin : '*'}
-// });
-
-// const port = process.env.PORT || 3000;
-
-// io.on('connection', (socket: any) => {
-//   console.log('a user connected');
-
-//   socket.on('message', (message: any) => {
-//     console.log(message);
-//     io.emit('message', `${socket.id.substr(0, 2)} said ${message}`);
-//   });
-
-//   socket.on('disconnect', () => {
-//     console.log('a user disconnected!');
-//   });
-// });
-
-// httpServer.listen(port, () => console.log(`listening on port ${port}`));

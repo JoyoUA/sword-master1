@@ -9,7 +9,7 @@ import { WebSocketService } from 'src/app/core/web-socket.service';
 
 export class SwordMasterComponent implements OnInit {
   newMessage!: string;
-  messageList: any[] = [...example];
+  messageList: any[] = [];
 
   @ViewChild('wordInput') wordInput!: ElementRef;
 
@@ -20,23 +20,53 @@ export class SwordMasterComponent implements OnInit {
   }
 
   ngOnInit(){
-    this.chatService.getNewMessage().subscribe((message: string) => {
-      if(Array.isArray(message)){
-        this.messageList.unshift(message);
-        console.log(this.messageList);
-      
+    this.chatService.getNewMessage().subscribe((message: any) => {
+      if(message.success == 'wordUnHide'){
+        alert('слово угадано')
+        this.messageList = []
+      } else if(message.error == 'wordNotFound'){
+        alert('слово не найдено в словаре')
+      } else if(message.word){
+        if(Array.isArray(message.word)){
+          this.messageList.unshift(message.word)      
+        }
       }
     })
   }
 
   sendMessage() {
-    this.chatService.sendMessage(this.newMessage);
-    this.newMessage = '';
+    const userWord = this.wordInput.nativeElement.value.toLowerCase()
+    const wordsList = this.getWordsFromLetters(this.messageList)
+    if(userWord.length == 0) return
+    if(userWord.length != 5){
+      alert('слово должно быть 5 букв')
+      this.wordInput.nativeElement.value = ''
+
+    } else if(wordsList.includes(userWord)){
+      alert('слово уже использовано')
+      this.wordInput.nativeElement.value = ''
+
+    } else {
+      this.chatService.sendMessage(userWord)
+      this.wordInput.nativeElement.value = ''
+    }
   }
 
   autoFocus() {
     this.wordInput.nativeElement.focus();
   }
+
+  getWordsFromLetters(letterSets: LetterStatus[][]): string[] {
+    return letterSets.map(set => set.map(item => item.letter).join(''));
+  }
+
+  // private getWordsFromLetters(array: string[]) {
+  //   return array.map((set: string) => {
+  //     return set.map(item => item.letter).join('');
+  //   });
+  // }
+  
+  // Получаем слова из массивов букв
 
   @HostListener('keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -50,9 +80,9 @@ export class SwordMasterComponent implements OnInit {
 
 }
 
-export interface Message {
+interface LetterStatus {
   letter: string;
-  valid: 'has' | 'success' | 'fail'
+  valid: string;
 }
 
 const example = [

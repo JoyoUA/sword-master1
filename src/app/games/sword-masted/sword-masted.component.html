@@ -1,31 +1,18 @@
 <div class="game">
-    <div class="outer-container">
-        <div class="inner-container">
-          <!-- Ваше содержимое здесь -->
-          <div class="list">
-            <div *ngFor="let message of messageList | reverse">
-                <div class="word">
-                    <ng-container *ngFor="let letter of message">
-                        <div class="letter" [ngClass]="{'bg-green': letter.valid == 'success', 'bg-yellow': letter.valid == 'has'}">
-                            {{letter.letter}}
-                        </div>
-                    </ng-container>
-                </div>
+    <div class="list">
+        <div *ngFor="let message of messageList">
+            <div class="word">
+                <ng-container *ngFor="let letter of message">
+                    <div class="letter" [ngClass]="{'bg-green': letter.valid == 'success', 'bg-yellow': letter.valid == 'has'}">
+                        {{letter.letter | uppercase}}
+                    </div>
+                </ng-container>
             </div>
-        </div>    
         </div>
-      </div>
-<!--       
-    <div class="list-wrapper">
-        
-    </div> -->
+    </div>
 
-    <form>
-        <input #wordInput autofocus name="word" [(ngModel)]="newMessage" (keyup)="$event.keyCode == 13 && sendMessage()" />
+    <form class="row">
+        <input #wordInput autofocus name="word" type="text">
         <button (click)="sendMessage()">Send Message</button>
     </form>
-    
 </div>
-
-
-<!-- <button (click)="createRoom()">create room</button> -->

@@ -15,7 +15,7 @@
     bottom: 20px;
 }
 
-body { font-family: 'Roboto', Arial, Helvetica, sans-serif; margin: 16px !important; background: rgb(2,0,36); background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,22,121,0.7959558823529411) 48%, rgba(0,212,255,1) 100%);}
+body { font-family: 'Roboto', Arial, Helvetica, sans-serif; margin: 16px !important; background: rgb(2,0,36); background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,22,121,0.7959558823529411) 48%, rgba(0,212,255,1) 100%); min-width: 480px; }
 body.touch .game .list { max-height: 50vh; }
 
 

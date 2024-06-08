@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  SOKET_ENDPOINT: 'http://localhost:3000'
+  SOKET_ENDPOINT: 'https://api-h1x4.onrender.com/'
 };

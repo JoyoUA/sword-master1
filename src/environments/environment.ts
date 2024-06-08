@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  SOKET_ENDPOINT: 'http://localhost:3000'
+  production: true,
+  SOKET_ENDPOINT: 'https://api-h1x4.onrender.com/'
 };
 
 /*

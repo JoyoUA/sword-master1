@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { WebSocketService } from './core/web-socket.service';import { ChatService } from './core/chat.service';
+import { BusService } from './core/bus.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit, OnDestroy {
   // newMessage!: string;
   // messageList: any[] = [];
 
-  constructor(private wss: WebSocketService, private chatService: ChatService){}
+  constructor(private wss: WebSocketService, public bus: BusService ){}
 
   // ngOnInit(): void {
   //   this.wss.connection()
@@ -23,6 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
+    this.bus.trigerNotify('load')
+    // this.bus.notify$.subscribe(msg => {})
     // this.chatService.getNewMessage().subscribe((message: string) => {
     //   if(Array.isArray(message)){
     //     this.messageList.push(message);

@@ -3,6 +3,10 @@
 <!-- <app-game-menu></app-game-menu> -->
 <router-outlet></router-outlet>
 
+<div class="notify">
+    <span>{{bus.notify$ | async}}</span>
+</div>
+
 <!-- <div *ngFor="let message of messageList">
     <ng-container *ngFor="let letter of message">
         <li [ngClass]="{'green': letter.valid == 'success', 'yellow': letter.valid == 'has'}">

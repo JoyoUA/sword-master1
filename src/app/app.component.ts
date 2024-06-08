@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { WebSocketService } from './core/web-socket.service';import { ChatService } from './core/chat.service';
 import { BusService } from './core/bus.service';
 @Component({
@@ -8,7 +8,8 @@ import { BusService } from './core/bus.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  title = 'N';
+  notifyShow: boolean = false;
+  notifyMessage: string = '';
 
   // newMessage!: string;
   // messageList: any[] = [];
@@ -24,7 +25,13 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(){
-    this.bus.trigerNotify('load')
+    this.bus.notify$.subscribe((msg: string) => {
+      if(msg){
+        this.notifyShow = true;
+        this.notifyMessage = msg;
+      } else this.notifyShow = false;
+    })
+    // this.bus.trigerNotify('load')
     // this.bus.notify$.subscribe(msg => {})
     // this.chatService.getNewMessage().subscribe((message: string) => {
     //   if(Array.isArray(message)){
@@ -42,5 +49,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   createRoom(){
     
+  }
+
+  @HostListener('touchstart', ['$event'])
+  onTouchStart(event: TouchEvent) {
+    document.body.classList.add('touch')
   }
 }

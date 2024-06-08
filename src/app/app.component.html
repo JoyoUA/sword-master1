@@ -3,8 +3,8 @@
 <!-- <app-game-menu></app-game-menu> -->
 <router-outlet></router-outlet>
 
-<div class="notify">
-    <span>{{bus.notify$ | async}}</span>
+<div class="notify" *ngIf="notifyShow">
+    <span [innerHTML]="notifyMessage"></span>
 </div>
 
 <!-- <div *ngFor="let message of messageList">

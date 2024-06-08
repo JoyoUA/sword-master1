@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Subject, delay } from "rxjs";
+import { Subject, debounceTime, delay, timer } from "rxjs";
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,9 @@ export class BusService {
     notify$ = this.subjectNotify.asObservable().pipe(delay(0))
 
     trigerNotify(msg: string): void{
-        this.subjectNotify.next(msg);
+        this.subjectNotify.next(msg)
+        timer(5000).subscribe(() => this.subjectNotify.next(''))
+        
     }
 
 }

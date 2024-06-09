@@ -51,8 +51,26 @@ export class AppComponent implements OnInit, OnDestroy {
     
   }
 
+  private resolveViewport() {
+    const w = 800, m = document.querySelector('meta[name="viewport"]')
+    if (window.screen.width <= w && window.innerWidth > window.screen.width) {
+      m?.setAttribute('content', `width=${w}`)
+    } else {
+      m?.setAttribute('content', 'width=device-width')
+    }
+  }
+
   @HostListener('touchstart', ['$event'])
   onTouchStart(event: TouchEvent) {
     document.body.classList.add('touch')
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.resolveViewport()
+    document.documentElement.style.minHeight = `${window.innerHeight}px`
+    document.body.style.minHeight = `${window.innerHeight}px`
+    document.getElementById('content')!.style.minHeight = `${window.innerHeight}px`
+  }
+
 }

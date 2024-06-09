@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { WebSocketService } from './core/web-socket.service';import { ChatService } from './core/chat.service';
 import { BusService } from './core/bus.service';
 @Component({
@@ -6,7 +6,7 @@ import { BusService } from './core/bus.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit, OnDestroy, AfterViewInit {
 
   notifyShow: boolean = false;
   notifyMessage: string = '';
@@ -40,6 +40,14 @@ export class AppComponent implements OnInit, OnDestroy {
       
     //   }
     // })
+  }
+
+  ngAfterViewInit(): void {
+    this.onResize()
+    this.resolveViewport()
+    if ('visualViewport' in window) {
+      (window as any).visualViewport.addEventListener('resize', () => this.onResize())
+    }
   }
 
   sendMessage() {
